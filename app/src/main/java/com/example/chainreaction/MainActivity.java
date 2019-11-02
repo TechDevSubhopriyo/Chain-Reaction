@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import static android.icu.lang.UCharacter.JoiningGroup.FE;
+
 public class MainActivity extends AppCompatActivity {
 
     boolean p1 = false, p2 = false;
+    Button r,e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
                 l.addView(b);
             }
 
+        r=findViewById(R.id.ref);
+        e=findViewById(R.id.exit);
+
         //while(true)
         {
             for (int i = 0; i <= 5; i++)
@@ -44,7 +51,71 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
         }
+        r.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
 
+            }
+        });
+        e.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert();
+            }
+        });
+
+    }
+    public void alert()
+    {
+        AlertDialog.Builder alt=new AlertDialog.Builder(this);
+        alt.setTitle("Attention!")
+                .setCancelable(false)
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        AlertDialog a=alt.create();
+        a.show();
+    }
+    public void refresh()
+    {
+        for (int i = 0; i <= 5; i++)
+            for (int j = 0; j <= 5; j++) {
+                Button b = findViewById((i*10)+j);
+                b.setText("0");
+                b.setBackgroundColor(Color.WHITE);
+            }
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alt=new AlertDialog.Builder(this);
+        alt.setTitle("Attention!")
+                .setCancelable(false)
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        AlertDialog a=alt.create();
+        a.show();
     }
 
     public void check() {
@@ -53,6 +124,23 @@ public class MainActivity extends AppCompatActivity {
             for (int j = 0; j <= 5; j++) {
                 int id = (i * 10) + j;
                 Button a, b = findViewById(id);
+                if((Integer.parseInt("" + b.getText()))==1)
+                {
+                    b.setBackgroundColor(Color.GREEN);
+                }
+                else if((Integer.parseInt("" + b.getText()))==2)
+                {
+                    b.setBackgroundColor(Color.YELLOW);
+                }
+                else if((Integer.parseInt("" + b.getText()))==3)
+                {
+                    b.setBackgroundColor(Color.RED);
+                }
+                else
+                {
+                    b.setBackgroundColor(Color.WHITE);
+                }
+
                 if (id == 0 && Integer.parseInt("" + b.getText()) >1) {
 
                     a = findViewById(id + 1);

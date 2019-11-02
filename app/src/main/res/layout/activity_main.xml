@@ -5,8 +5,27 @@
     android:id="@+id/con"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#180707"
     tools:context=".MainActivity">
 
 
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="566dp"
+        android:text="EXIT"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/ref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="566dp"
+        android:layout_marginEnd="94dp"
+        android:text="REFRESH"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
