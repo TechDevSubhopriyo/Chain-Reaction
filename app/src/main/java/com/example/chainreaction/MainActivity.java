@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.sql.Time;
 
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
@@ -85,26 +88,34 @@ public class MainActivity extends AppCompatActivity {
     }
     public void end()
     {
-        int i1=0,i2=0;
-        for (int i = 0; i <= 5; i++)
-            for (int j = 0; j <= 5; j++) {
-                Button b = findViewById((i * 10) + j);
-                if(((ColorDrawable)b.getBackground()).getColor()==GREEN)
-                    i1=1;
-                if(((ColorDrawable)b.getBackground()).getColor()==RED)
-                    i2=1;
 
-            }
-        if(i1==1 && i2==0)
-        {
-            Toast.makeText(this,"PLAYER GREEN WINS",Toast.LENGTH_LONG).show();
-            refresh();
-        }
-        if(i1==0 && i2==1)
-        {
-            Toast.makeText(this,"PLAYER RED WINS",Toast.LENGTH_LONG).show();
-            refresh();
-        }
+        final Handler h=new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    int i1=0,i2=0;
+                    for (int i = 0; i <= 5; i++)
+                        for (int j = 0; j <= 5; j++) {
+                            Button b = findViewById((i * 10) + j);
+                            if(((ColorDrawable)b.getBackground()).getColor()==GREEN)
+                                i1=1;
+                            if(((ColorDrawable)b.getBackground()).getColor()==RED)
+                                i2=1;
+
+                        }
+                    if(i1==1 && i2==0)
+                    {
+                        Toast.makeText(MainActivity.this,"PLAYER GREEN WINS",Toast.LENGTH_LONG).show();
+                        refresh();
+                    }
+                    if(i1==0 && i2==1)
+                    {
+                        Toast.makeText(MainActivity.this,"PLAYER RED WINS",Toast.LENGTH_LONG).show();
+                        refresh();
+                    }
+                }
+            },2000);
+
     }
     public void alert()
     {
@@ -1742,7 +1753,7 @@ a.setBackgroundColor(RED);}
             fl=0;
             check();
         }
-        else {
+         {
             p1 = p1 * -1;
             p2 = p2 * -1;
         }
