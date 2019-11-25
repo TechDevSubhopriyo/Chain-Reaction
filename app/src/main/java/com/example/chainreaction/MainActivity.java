@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,16 +13,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.sql.Time;
-
+import static android.graphics.Color.BLACK;
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 import static android.graphics.Color.WHITE;
-import static android.icu.lang.UCharacter.JoiningGroup.FE;
 
 public class MainActivity extends AppCompatActivity {
 
-    int p1=1,p2=-1;
+    int p1=-1,p2=1;
     Button r,e;
     boolean end=false;
     int jj=0;
@@ -46,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         r=findViewById(R.id.ref);
         e=findViewById(R.id.exit);
         refresh();
-        //while(true)
+        change1();
         {
             for (int i = 0; i <= 5; i++)
                 for (int j = 0; j <= 5; j++) {
@@ -54,17 +51,22 @@ public class MainActivity extends AppCompatActivity {
                         b.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+
+
+
                                 jj++;
                                 if(jj==2)
                                     end=true;
-                                if((((ColorDrawable)b.getBackground()).getColor()==RED && p2==1 )||(((ColorDrawable)b.getBackground()).getColor()==GREEN && p1==1) || ((ColorDrawable)b.getBackground()).getColor()==WHITE)
+                                if((b.getCurrentTextColor()==RED && p2==1 )||(b.getCurrentTextColor()==GREEN && p1==1) || b.getCurrentTextColor()==BLACK)
                                 {
+                                    change2();
                                 b.setText("" + ((Integer.parseInt("" + b.getText())) + 1));
                                 if (p1 == 1)
-                                    b.setBackgroundColor(GREEN);
+                                    b.setTextColor(GREEN);
                                 else if (p2 == 1)
-                                    b.setBackgroundColor(RED);
+                                    b.setTextColor(RED);
                                 check();
+                                change1();
                             }
                             }
                         });
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 refresh();
+                change1();
 
             }
         });
@@ -86,6 +89,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public void change1()
+    {
+        for (int i = 0; i <= 5; i++)
+            for (int j = 0; j <= 5; j++) {
+                Button b = findViewById((i * 10) + j);
+                String s1 = b.getText().toString();
+                b.setBackgroundColor(WHITE);
+                if (s1.equals("0"))
+                {
+                    b.setText("");
+                    b.setTextColor(BLACK);
+                }
+                else if (s1.equals( "1"))
+                    b.setText("" + "\u25CF");
+                else if (s1.equals("2"))
+                    b.setText("" + "\u25CF" + "\u25CF");
+                else if (s1.equals("3"))
+                    b.setText("" + "\u25CF" + "\u25CF" + "\u25CF");
+
+            }
+    }
+    public void change2()
+    {
+        for (int i = 0; i <= 5; i++)
+            for (int j = 0; j <= 5; j++) {
+                Button b = findViewById((i * 10) + j);
+                b.setBackgroundColor(WHITE);
+                String s1 = b.getText().toString();
+                if (s1.equals("" + "\u25CF"))
+                    b.setText("1");
+                else if (s1.equals(""))
+                    b.setText("0");
+                else if (s1.equals("" + "\u25CF"+ "\u25CF"))
+                    b.setText("2");
+                else if (s1.equals("" + "\u25CF" + "\u25CF" + "\u25CF"))
+                    b.setText("3");
+            }
+    }
+
+
+
     public void end()
     {
 
@@ -97,9 +141,11 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i <= 5; i++)
                         for (int j = 0; j <= 5; j++) {
                             Button b = findViewById((i * 10) + j);
-                            if(((ColorDrawable)b.getBackground()).getColor()==GREEN)
+                            //if(((ColorDrawable)b.getBackground()).getColor()==GREEN)
+                             if(b.getCurrentTextColor()==GREEN)
                                 i1=1;
-                            if(((ColorDrawable)b.getBackground()).getColor()==RED)
+                            //if(((ColorDrawable)b.getBackground()).getColor()==RED)
+                              if(b.getCurrentTextColor()==RED)
                                 i2=1;
 
                         }
@@ -107,14 +153,16 @@ public class MainActivity extends AppCompatActivity {
                     {
                         Toast.makeText(MainActivity.this,"PLAYER GREEN WINS",Toast.LENGTH_LONG).show();
                         refresh();
+                        change1();
                     }
                     if(i1==0 && i2==1)
                     {
                         Toast.makeText(MainActivity.this,"PLAYER RED WINS",Toast.LENGTH_LONG).show();
                         refresh();
+                        change1();
                     }
                 }
-            },2000);
+            },200);
 
     }
     public void alert()
@@ -142,8 +190,6 @@ public class MainActivity extends AppCompatActivity {
     {
         jj=0;
         end=false;
-        p1=p1*-1;
-        p2=p2*-1;
         for (int i = 0; i <= 5; i++)
             for (int j = 0; j <= 5; j++) {
                 Button b = findViewById((i*10)+j);
@@ -188,33 +234,33 @@ public class MainActivity extends AppCompatActivity {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%2));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
 
                     check();
                 }
@@ -222,1527 +268,1527 @@ a.setBackgroundColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%2));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 50 && Integer.parseInt("" + b.getText()) >1) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%2));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 55 && Integer.parseInt("" + b.getText()) >1) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%2));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 01 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 02 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 03 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 04 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 51 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 52 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 53 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 54 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 10 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 20 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 30 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 40 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 15 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 25 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 35 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 45 && Integer.parseInt("" + b.getText()) >2) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%3));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 44 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 43 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 42 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 41 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 34 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 33 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 32 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 31 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 24 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 23 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 22 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     fl = 1;
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 21 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 14 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 13 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 12 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
                 if (id == 11 && Integer.parseInt("" + b.getText()) >3) {
                     a = findViewById(id - 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 1);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id - 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
-                    { b.setBackgroundColor(GREEN);
-                        a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                     else if(p2==1)
-                    { b.setBackgroundColor(RED);
-                        a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     a = findViewById(id + 10);
                     a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
                     b.setText("" + ((Integer.parseInt("" + b.getText()))%4));
                     fl = 1;
                             if(p1==1)
-                                { b.setBackgroundColor(GREEN);
-a.setBackgroundColor(GREEN);}
+                    { b.setTextColor(GREEN);
+                        a.setTextColor(GREEN);}
                             else if(p2==1)
-                                { b.setBackgroundColor(RED);
-a.setBackgroundColor(RED);}
+                    { b.setTextColor(RED);
+                        a.setTextColor(RED);}
                     check();
                 }
             }
@@ -1753,6 +1799,7 @@ a.setBackgroundColor(RED);}
             fl=0;
             check();
         }
+
          {
             p1 = p1 * -1;
             p2 = p2 * -1;
