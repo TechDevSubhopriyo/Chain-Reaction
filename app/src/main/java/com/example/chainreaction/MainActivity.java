@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 b.setId((i * 10) + j);
                 b.setText("0");
                 l.addView(b);
+                b.setTextSize(30);
             }
 
         r=findViewById(R.id.ref);
