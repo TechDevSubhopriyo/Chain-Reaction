@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,10 +21,9 @@ import static android.graphics.Color.WHITE;
 
 public class MainActivity extends AppCompatActivity {
 
-    int p1=-1,p2=1;
-    Button r,e;
-    boolean end=false;
-    int jj=0;
+    private int p1=-1,p2=1;
+    private boolean end=false;
+    private int jj=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 b.setTextSize(30);
             }
 
-        r=findViewById(R.id.ref);
-        e=findViewById(R.id.exit);
+        Button r = findViewById(R.id.ref);
+        Button e = findViewById(R.id.exit);
         refresh();
         change1();
         {
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int j = 0; j <= 5; j++) {
                     final Button b = findViewById((i * 10) + j);
                         b.setOnClickListener(new View.OnClickListener() {
+                            @SuppressLint("DefaultLocale")
                             @Override
                             public void onClick(View v) {
 
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                                 if((b.getCurrentTextColor()==RED && p2==1 )||(b.getCurrentTextColor()==GREEN && p1==1) || b.getCurrentTextColor()==BLACK)
                                 {
                                     change2();
-                                b.setText("" + ((Integer.parseInt("" + b.getText())) + 1));
+                                b.setText(String.format("%d", (Integer.parseInt(b.getText().toString())) + 1));
                                 if (p1 == 1)
                                     b.setTextColor(GREEN);
                                 else if (p2 == 1)
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    @SuppressLint("SetTextI18n")
     public void change1()
     {
         for (int i = 0; i <= 5; i++)
@@ -97,17 +99,21 @@ public class MainActivity extends AppCompatActivity {
                 Button b = findViewById((i * 10) + j);
                 String s1 = b.getText().toString();
                 b.setBackgroundColor(WHITE);
-                if (s1.equals("0"))
-                {
-                    b.setText("");
-                    b.setTextColor(BLACK);
+                switch (s1) {
+                    case "0":
+                        b.setText("");
+                        b.setTextColor(BLACK);
+                        break;
+                    case "1":
+                        b.setText("" + "\u25CF");
+                        break;
+                    case "2":
+                        b.setText("" + "\u25CF" + "\u25CF");
+                        break;
+                    case "3":
+                        b.setText("" + "\u25CF" + "\u25CF" + "\u25CF");
+                        break;
                 }
-                else if (s1.equals( "1"))
-                    b.setText("" + "\u25CF");
-                else if (s1.equals("2"))
-                    b.setText("" + "\u25CF" + "\u25CF");
-                else if (s1.equals("3"))
-                    b.setText("" + "\u25CF" + "\u25CF" + "\u25CF");
 
             }
     }
@@ -118,14 +124,20 @@ public class MainActivity extends AppCompatActivity {
                 Button b = findViewById((i * 10) + j);
                 b.setBackgroundColor(WHITE);
                 String s1 = b.getText().toString();
-                if (s1.equals("" + "\u25CF"))
-                    b.setText("1");
-                else if (s1.equals(""))
-                    b.setText("0");
-                else if (s1.equals("" + "\u25CF"+ "\u25CF"))
-                    b.setText("2");
-                else if (s1.equals("" + "\u25CF" + "\u25CF" + "\u25CF"))
-                    b.setText("3");
+                switch (s1) {
+                    case "" + "\u25CF":
+                        b.setText("1");
+                        break;
+                    case "":
+                        b.setText("0");
+                        break;
+                    case "" + "\u25CF" + "\u25CF":
+                        b.setText("2");
+                        break;
+                    case "" + "\u25CF" + "\u25CF" + "\u25CF":
+                        b.setText("3");
+                        break;
+                }
             }
     }
 
@@ -233,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 if (id == 0 && Integer.parseInt("" + b.getText()) >1) {
 
                     a = findViewById(id + 1);
-                    a.setText("" + (Integer.parseInt("" + a.getText()) + 1));
+                    a.setText(String.format("%d", Integer.parseInt("" + a.getText()) + 1));
                     if(p1==1)
                     { b.setTextColor(GREEN);
                         a.setTextColor(GREEN);}
@@ -1810,4 +1822,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show();
+    }
 }
